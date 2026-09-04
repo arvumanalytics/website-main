@@ -3,21 +3,24 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Arvum · Motor de precios dinámicos</title>
-<meta name="description" content="Arvum: plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo. Postula al programa piloto.">
+<title data-i18n="meta.title">Arvum · Motor de precios dinámicos</title>
+<meta name="description" data-i18n-content="meta.description" content="Arvum: plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo. Postula al programa piloto.">
 <!-- Update the domain below (canonical + og:url) if you host somewhere other than arvumanalytics.com. -->
 <link rel="canonical" href="https://arvumanalytics.com/">
+<link rel="alternate" hreflang="es" href="https://arvumanalytics.com/?lang=es">
+<link rel="alternate" hreflang="en" href="https://arvumanalytics.com/?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://arvumanalytics.com/">
 <meta name="theme-color" content="#f5ead8">
 <meta name="robots" content="index,follow">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Arvum">
-<meta property="og:locale" content="es_CL">
+<meta property="og:locale" data-i18n-content="meta.locale" content="es_CL">
 <meta property="og:url" content="https://arvumanalytics.com/">
-<meta property="og:title" content="Arvum · El precio de todo se mueve">
-<meta property="og:description" content="Plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo. Postula al programa piloto.">
+<meta property="og:title" data-i18n-content="meta.ogTitle" content="Arvum · El precio de todo se mueve">
+<meta property="og:description" data-i18n-content="meta.ogDescription" content="Plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo. Postula al programa piloto.">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Arvum · El precio de todo se mueve">
-<meta name="twitter:description" content="Plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo.">
+<meta name="twitter:title" data-i18n-content="meta.ogTitle" content="Arvum · El precio de todo se mueve">
+<meta name="twitter:description" data-i18n-content="meta.twitterDescription" content="Plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%232f3a57'/%3E%3Ctext x='50' y='72' font-family='Arial,Helvetica,sans-serif' font-size='68' font-weight='bold' fill='%23bcd98a' text-anchor='middle'%3EA%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,6 +127,16 @@ select.input{appearance:none}
 .input{background:rgba(255,255,255,.1)!important;border-color:rgba(255,255,255,.35)!important;color:#fff!important;border-radius:10px!important}
 .input::placeholder{color:rgba(255,255,255,.55)}
 
+/* language switcher */
+.lang-btn{
+  padding:6px 12px;gap:6px;
+  font-family:var(--font-body);font-size:12.5px;font-weight:600;
+  letter-spacing:.06em;text-transform:uppercase;
+  color:var(--blue);flex:0 0 auto;
+}
+.lang-btn svg{width:15px;height:15px;opacity:.75;transition:opacity .15s}
+.lang-btn:hover svg{opacity:1}
+
 /* layout helpers (desktop defaults; overridden below on small screens) */
 .nav-inner{display:flex;align-items:center;gap:22px;padding:20px 40px}
 .nav-links{display:contents}
@@ -140,6 +153,8 @@ select.input{appearance:none}
   .nav-inner{padding:14px 20px;gap:12px;flex-wrap:wrap}
   .nav-links{display:none}
   .nav-inner .btn-postular{margin-left:auto}
+  .lang-btn{padding:5px 10px;font-size:11.5px}
+  .lang-btn svg{width:14px;height:14px}
   .hero{grid-template-columns:1fr;gap:36px;padding:40px 20px 56px}
   .hero h1{font-size:clamp(36px,10vw,52px)!important;max-width:none!important}
   .hero .rot-line{font-size:22px!important}
@@ -153,6 +168,14 @@ select.input{appearance:none}
   .footer-inner{padding:24px 20px 36px}
   .chip{white-space:normal}
 }
+
+/* The language pill takes the room the "private beta" badge used to use,
+   so drop the badge on phones and keep the nav on a single row. */
+@media (max-width: 600px){
+  .nav-beta{display:none}
+  .nav-inner{gap:10px}
+  .lang-btn{padding:5px 9px;letter-spacing:.04em}
+}
 </style>
 </head>
 <body>
@@ -160,54 +183,58 @@ select.input{appearance:none}
 <section style="background:var(--green);color:var(--blue);position:relative">
 <nav style="position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--green) 84%, transparent);-webkit-backdrop-filter:saturate(1.3) blur(10px);backdrop-filter:saturate(1.3) blur(10px);border-bottom:1px solid var(--line)">
 <div class="wrap nav-inner">
+<button type="button" id="langToggle" class="btn btn-outline lang-btn" aria-label="Switch to English" title="Switch to English">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><path d="M2 12h20"></path><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+<span id="langCode">EN</span>
+</button>
 <span style="font-family:var(--font-heading);font-size:23px;color:var(--blue)">Arvum</span>
-<span style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--blue);border:1px solid rgba(47,58,87,.4);border-radius:999px;padding:3px 10px">Beta privada</span>
+<span class="nav-beta" data-i18n="nav.beta" style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;color:var(--blue);border:1px solid rgba(47,58,87,.4);border-radius:999px;padding:3px 10px">Beta privada</span>
 <span class="nav-links">
-<a href="#beneficios" class="navlink" style="margin-left:auto">Plataforma</a>
-<a href="#beneficios" class="navlink">Beneficios</a>
+<a href="#beneficios" class="navlink" data-i18n="nav.platform" style="margin-left:auto">Plataforma</a>
+<a href="#beneficios" class="navlink" data-i18n="nav.benefits">Beneficios</a>
 </span>
-<a href="#piloto" class="btn btn-postular" style="padding:9px 18px;font-family:var(--font-body);font-size:14px;font-weight:600;text-decoration:none">Contactanos</a>
+<a href="#piloto" class="btn btn-postular" data-i18n="nav.contact" style="padding:9px 18px;font-family:var(--font-body);font-size:14px;font-weight:600;text-decoration:none">Contactanos</a>
 </div>
 </nav>
 
 <div style="overflow:hidden;padding:11px 0;border-bottom:1px solid var(--line);-webkit-mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent);mask-image:linear-gradient(90deg,transparent,#000 5%,#000 95%,transparent)">
 <div class="tick">
-<span class="feed">Salmón <b>$28.900 ▼</b></span>
-<span class="feed">Vino Reserva <b>$58.900 ▲</b></span>
-<span class="feed">Zapatillas Run <b>$239.900 ▼</b></span>
-<span class="feed">Smart TV 50" <b>$1.699.900 ▼</b></span>
-<span class="feed">Café Premium <b>$27.500 ▲</b></span>
-<span class="feed">Salmón <b>$28.900 ▼</b></span>
-<span class="feed">Vino Reserva <b>$58.900 ▲</b></span>
-<span class="feed">Zapatillas Run <b>$239.900 ▼</b></span>
-<span class="feed">Smart TV 50" <b>$1.699.900 ▼</b></span>
-<span class="feed">Café Premium <b>$27.500 ▲</b></span>
+<span class="feed"><span data-i18n="feed.salmon">Salmón</span> <b>$28.900 ▼</b></span>
+<span class="feed"><span data-i18n="feed.wine">Vino Reserva</span> <b>$58.900 ▲</b></span>
+<span class="feed"><span data-i18n="feed.shoes">Zapatillas Run</span> <b>$239.900 ▼</b></span>
+<span class="feed"><span data-i18n="feed.tv">Smart TV 50"</span> <b>$1.699.900 ▼</b></span>
+<span class="feed"><span data-i18n="feed.coffee">Café Premium</span> <b>$27.500 ▲</b></span>
+<span class="feed"><span data-i18n="feed.salmon">Salmón</span> <b>$28.900 ▼</b></span>
+<span class="feed"><span data-i18n="feed.wine">Vino Reserva</span> <b>$58.900 ▲</b></span>
+<span class="feed"><span data-i18n="feed.shoes">Zapatillas Run</span> <b>$239.900 ▼</b></span>
+<span class="feed"><span data-i18n="feed.tv">Smart TV 50"</span> <b>$1.699.900 ▼</b></span>
+<span class="feed"><span data-i18n="feed.coffee">Café Premium</span> <b>$27.500 ▲</b></span>
 </div>
 </div>
 
 <div class="wrap hero">
 <div>
-<div class="fu" style="animation-delay:.05s;display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--blue)"><span style="width:8px;height:8px;border-radius:50%;background:var(--blue);animation:pulse 1.6s ease-in-out infinite"></span>Motor de precios · en vivo</div>
-<h1 class="fu" style="animation-delay:.12s;font-family:var(--font-heading);font-size:clamp(46px,6.4vw,76px);line-height:.94;margin:20px 0 0;letter-spacing:-.025em;max-width:13ch;color:var(--blue)">El precio de todo se mueve.</h1>
-<div class="fu rot-line" style="animation-delay:.2s;font-family:var(--font-heading);font-size:30px;line-height:1.1;margin:24px 0 0;display:flex;flex-direction:column;align-items:flex-start;gap:8px">Arvum optimiza&nbsp;<span class="rot" style="color:#bcd98a;background:var(--blue);border-radius:9px;padding:13px 11px"><span class="rotwin"><ul><li>tu restaurante</li><li>tu moda</li><li>tu electrónica</li><li>tu e-commerce</li><li>tu ferretería</li><li>tu supermercado</li></ul></span></span></div>
-<p class="fu" style="animation-delay:.28s;font-size:16px;line-height:1.65;margin:26px 0 0;max-width:46ch;color:color-mix(in srgb,var(--blue) 78%, transparent)">Una plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo.</p>
+<div class="fu" style="animation-delay:.05s;display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--blue)"><span style="width:8px;height:8px;border-radius:50%;background:var(--blue);animation:pulse 1.6s ease-in-out infinite"></span><span data-i18n="hero.kicker">Motor de precios · en vivo</span></div>
+<h1 class="fu" data-i18n="hero.h1" style="animation-delay:.12s;font-family:var(--font-heading);font-size:clamp(46px,6.4vw,76px);line-height:.94;margin:20px 0 0;letter-spacing:-.025em;max-width:13ch;color:var(--blue)">El precio de todo se mueve.</h1>
+<div class="fu rot-line" style="animation-delay:.2s;font-family:var(--font-heading);font-size:30px;line-height:1.1;margin:24px 0 0;display:flex;flex-direction:column;align-items:flex-start;gap:8px"><span data-i18n="hero.rotLead">Arvum optimiza</span>&nbsp;<span class="rot" style="color:#bcd98a;background:var(--blue);border-radius:9px;padding:13px 11px"><span class="rotwin"><ul><li data-i18n="hero.rot1">tu restaurante</li><li data-i18n="hero.rot2">tu moda</li><li data-i18n="hero.rot3">tu electrónica</li><li data-i18n="hero.rot4">tu e-commerce</li><li data-i18n="hero.rot5">tu ferretería</li><li data-i18n="hero.rot6">tu supermercado</li></ul></span></span></div>
+<p class="fu" data-i18n="hero.lede" style="animation-delay:.28s;font-size:16px;line-height:1.65;margin:26px 0 0;max-width:46ch;color:color-mix(in srgb,var(--blue) 78%, transparent)">Una plataforma unificada + IA que dinamiza el precio de cada producto según la demanda, el inventario, la competencia y el tiempo.</p>
 <div class="fu hero-ctas" style="animation-delay:.36s">
-<a href="#piloto" class="btn btn-bw" style="padding:14px 28px;font-family:var(--font-heading);font-size:15px;text-decoration:none">Postula como piloto</a>
-<a href="#beneficios" class="btn btn-white" style="font-size:15px;padding:14px 24px;text-decoration:none">Cómo funciona →</a>
+<a href="#piloto" class="btn btn-bw" data-i18n="hero.ctaPrimary" style="padding:14px 28px;font-family:var(--font-heading);font-size:15px;text-decoration:none">Postula como piloto</a>
+<a href="#beneficios" class="btn btn-white" data-i18n="hero.ctaSecondary" style="font-size:15px;padding:14px 24px;text-decoration:none">Cómo funciona →</a>
 </div>
 </div>
 
 <div class="fu" style="animation-delay:.3s;background:var(--blue);border:1px solid rgba(188,217,138,.08);border-radius:20px;padding:22px;color:#bcd98a">
 <div style="display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(188,217,138,.6);font-family:ui-monospace,Menlo,monospace">
-<span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite"></span>Precio en vivo
-<span style="margin-left:auto;text-transform:none;letter-spacing:0">hace 2s</span>
+<span style="width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 1.6s ease-in-out infinite"></span><span data-i18n="card.livePrice">Precio en vivo</span>
+<span data-i18n="card.ago" style="margin-left:auto;text-transform:none;letter-spacing:0">hace 2s</span>
 </div>
 <div style="display:flex;align-items:baseline;justify-content:space-between;margin-top:18px">
 <div>
-<div style="font-family:var(--font-heading);font-size:19px">Salmón fresco 500g</div>
-<div style="font-size:12px;color:rgba(188,217,138,.55);margin-top:3px">SKU 90412 · Perecedero</div>
+<div data-i18n="card.product" style="font-family:var(--font-heading);font-size:19px">Salmón fresco 500g</div>
+<div data-i18n="card.sku" style="font-size:12px;color:rgba(188,217,138,.55);margin-top:3px">SKU 90412 · Perecedero</div>
 </div>
-<span style="font-size:11px;font-weight:600;color:var(--blue);background:var(--green);border-radius:999px;padding:3px 10px;white-space:nowrap">▼ vencimiento</span>
+<span data-i18n="card.tag" style="font-size:11px;font-weight:600;color:var(--blue);background:var(--green);border-radius:999px;padding:3px 10px;white-space:nowrap">▼ vencimiento</span>
 </div>
 <div style="display:flex;align-items:flex-end;gap:12px;margin-top:16px;font-family:ui-monospace,Menlo,monospace">
 <span style="font-size:16px;color:rgba(188,217,138,.45);text-decoration:line-through">$38.900</span>
@@ -217,47 +244,47 @@ select.input{appearance:none}
 <polyline points="0,14 40,10 80,20 120,16 160,30 200,38 260,48" fill="none" stroke="var(--green)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></polyline>
 <circle cx="260" cy="48" r="3.5" fill="var(--green)"></circle>
 </svg>
-<div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(188,217,138,.45);font-family:ui-monospace,Menlo,monospace;margin-top:4px"><span>demanda ↓</span><span>margen óptimo</span></div>
+<div style="display:flex;justify-content:space-between;font-size:11px;color:rgba(188,217,138,.45);font-family:ui-monospace,Menlo,monospace;margin-top:4px"><span data-i18n="card.demand">demanda ↓</span><span data-i18n="card.margin">margen óptimo</span></div>
 </div>
 </div>
 </section>
 
 <div class="wrap section-pad" style="padding-top:48px;padding-bottom:12px">
-<h2 style="font-family:var(--font-heading);font-size:clamp(26px,3.2vw,38px);line-height:1.06;margin:0 0 24px;color:var(--blue);text-align:left;max-width:none;letter-spacing:-.01em">Aplica a cualquier producto cuyo valor cambie con el mercado</h2>
+<h2 data-i18n="verticals.title" style="font-family:var(--font-heading);font-size:clamp(26px,3.2vw,38px);line-height:1.06;margin:0 0 24px;color:var(--blue);text-align:left;max-width:none;letter-spacing:-.01em">Aplica a cualquier producto cuyo valor cambie con el mercado</h2>
 <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:flex-start">
-<span class="chip">Supermercados y perecederos</span>
-<span class="chip">Moda y temporada</span>
-<span class="chip">Electrónica</span>
-<span class="chip">E-commerce</span>
+<span class="chip" data-i18n="chip.grocery">Supermercados y perecederos</span>
+<span class="chip" data-i18n="chip.fashion">Moda y temporada</span>
+<span class="chip" data-i18n="chip.electronics">Electrónica</span>
+<span class="chip" data-i18n="chip.ecommerce">E-commerce</span>
 
-<span class="chip">Ferretería y hogar</span>
-<span class="chip">Bebidas y licores</span>
+<span class="chip" data-i18n="chip.hardware">Ferretería y hogar</span>
+<span class="chip" data-i18n="chip.drinks">Bebidas y licores</span>
 </div>
 </div>
 
 <div id="beneficios" class="wrap section-pad" style="padding-top:60px;padding-bottom:12px">
-<h2 style="font-family:var(--font-heading);font-size:clamp(28px,6vw,36px);line-height:1.02;margin:0;color:var(--blue);letter-spacing:-.01em">¿Por qué Arvum?</h2>
+<h2 data-i18n="benefits.title" style="font-family:var(--font-heading);font-size:clamp(28px,6vw,36px);line-height:1.02;margin:0;color:var(--blue);letter-spacing:-.01em">¿Por qué Arvum?</h2>
 <div class="benefits-grid">
 <div class="bcard">
 <span class="itile" style="background:#bcd98a;color:var(--blue)"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg></span>
-<h3 style="font-family:var(--font-heading);font-size:20px;margin:15px 0 0;color:#fff">Una sola plataforma</h3>
-<p style="font-size:14px;line-height:1.6;margin:8px 0 0;color:#fff">Unifica POS, inventario, compras, precios, promociones, logística, finanzas y e-commerce. Adiós a los silos de datos.</p>
+<h3 data-i18n="benefit1.title" style="font-family:var(--font-heading);font-size:20px;margin:15px 0 0;color:#fff">Una sola plataforma</h3>
+<p data-i18n="benefit1.body" style="font-size:14px;line-height:1.6;margin:8px 0 0;color:#fff">Unifica POS, inventario, compras, precios, promociones, logística, finanzas y e-commerce. Adiós a los silos de datos.</p>
 </div>
 <div class="bcard">
 <span class="itile" style="background:#bcd98a;color:var(--blue)"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"></polyline><polyline points="16 7 22 7 22 13"></polyline></svg></span>
-<h3 style="font-family:var(--font-heading);font-size:20px;margin:15px 0 0;color:#fff">Maximiza ingresos</h3>
-<p style="font-size:14px;line-height:1.6;margin:8px 0 0;color:#fff">La IA evalúa decenas de variables y aplica el precio óptimo en tiempo real. Cada producto llega al consumidor en el momento y precio precisos.</p>
+<h3 data-i18n="benefit2.title" style="font-family:var(--font-heading);font-size:20px;margin:15px 0 0;color:#fff">Maximiza ingresos</h3>
+<p data-i18n="benefit2.body" style="font-size:14px;line-height:1.6;margin:8px 0 0;color:#fff">La IA evalúa decenas de variables y aplica el precio óptimo en tiempo real. Cada producto llega al consumidor en el momento y precio precisos.</p>
 </div>
 <div class="bcard">
 <span class="itile" style="background:#bcd98a;color:var(--blue)"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg></span>
-<h3 style="font-family:var(--font-heading);font-size:20px;margin:15px 0 0;color:#fff">Reduce el desperdicio</h3>
-<p style="font-size:14px;line-height:1.6;margin:8px 0 0;color:#fff">Coloca los perecederos antes de su vencimiento: menos merma, menos liquidaciones y alimentos accesibles.</p>
+<h3 data-i18n="benefit3.title" style="font-family:var(--font-heading);font-size:20px;margin:15px 0 0;color:#fff">Reduce el desperdicio</h3>
+<p data-i18n="benefit3.body" style="font-size:14px;line-height:1.6;margin:8px 0 0;color:#fff">Coloca los perecederos antes de su vencimiento: menos merma, menos liquidaciones y alimentos accesibles.</p>
 </div>
 </div>
 </div>
 
 <div class="wrap section-pad" style="padding-top:36px;padding-bottom:58px;text-align:center">
-<p class="muted" style="font-size:16px;margin:0 0 20px">Empezamos como capa de integración. Se conecta con lo que ya tienes:</p>
+<p class="muted" data-i18n="integrations.lede" style="font-size:16px;margin:0 0 20px">Empezamos como capa de integración. Se conecta con lo que ya tienes:</p>
 <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center">
 <span style="font-size:13px;font-weight:600;padding:8px 16px;border-radius:10px;background:var(--blue);color:#fff">Oracle Retail</span>
 <span style="font-size:13px;font-weight:600;padding:8px 16px;border-radius:10px;background:var(--blue);color:#fff">Blue Yonder</span>
@@ -270,28 +297,29 @@ select.input{appearance:none}
 <div class="pilot-shell">
 <div class="pilot-grid">
 <div>
-<span style="font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#fff">Programa piloto</span>
-<h3 style="font-family:var(--font-heading);font-size:clamp(28px,3.2vw,36px);line-height:1.04;margin:14px 0 0;letter-spacing:-.02em;color:#bcd98a">Sé de los primeros en usar Arvum</h3>
-<p style="font-size:18px;line-height:1.6;margin:18px 0 0;color:#fff">Cupos limitados para retailers que quieran pilotear la plataforma con retroalimentación real. Cuéntanos de tu operación y te contactamos.</p>
+<span data-i18n="pilot.kicker" style="font-size:14px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#fff">Programa piloto</span>
+<h3 data-i18n="pilot.title" style="font-family:var(--font-heading);font-size:clamp(28px,3.2vw,36px);line-height:1.04;margin:14px 0 0;letter-spacing:-.02em;color:#bcd98a">Sé de los primeros en usar Arvum</h3>
+<p data-i18n="pilot.body" style="font-size:18px;line-height:1.6;margin:18px 0 0;color:#fff">Cupos limitados para retailers que quieran pilotear la plataforma con retroalimentación real. Cuéntanos de tu operación y te contactamos.</p>
 </div>
 <div>
 <form id="pilotForm" action="https://formspree.io/f/xjgneked" method="POST">
-<input type="hidden" name="_subject" value="Nueva postulación piloto — Arvum">
+<input type="hidden" name="_subject" data-i18n-value="form.subject" value="Nueva postulación piloto — Arvum">
+<input type="hidden" name="_language" id="formLanguage" value="es">
 <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
 <div class="form-row">
-<div class="field"><label>Nombre</label><input class="input" name="nombre" required placeholder="Tu nombre"></div>
-<div class="field"><label>Empresa</label><input class="input" name="empresa" required placeholder="Retailer / empresa"></div>
-<div class="field" style="grid-column:1 / -1"><label>Email de trabajo</label><input class="input" type="email" name="email" required placeholder="nombre@empresa.com"></div>
-<div class="field" style="grid-column:1 / -1"><label>Número de tiendas</label><select class="input" name="tiendas"><option style="color:#2f3a57">1 – 10</option><option style="color:#2f3a57">11 – 50</option><option style="color:#2f3a57">51 – 200</option><option style="color:#2f3a57">Más de 200</option></select></div>
-<div class="field" style="grid-column:1 / -1"><label>Tu caso de uso</label><textarea class="input" name="caso_de_uso" placeholder="¿Qué te gustaría resolver con precios dinámicos?" style="min-height:70px"></textarea></div>
+<div class="field"><label data-i18n="form.name">Nombre</label><input class="input" name="nombre" required data-i18n-placeholder="form.namePh" placeholder="Tu nombre"></div>
+<div class="field"><label data-i18n="form.company">Empresa</label><input class="input" name="empresa" required data-i18n-placeholder="form.companyPh" placeholder="Retailer / empresa"></div>
+<div class="field" style="grid-column:1 / -1"><label data-i18n="form.email">Email de trabajo</label><input class="input" type="email" name="email" required data-i18n-placeholder="form.emailPh" placeholder="nombre@empresa.com"></div>
+<div class="field" style="grid-column:1 / -1"><label data-i18n="form.stores">Número de tiendas</label><select class="input" name="tiendas"><option style="color:#2f3a57">1 – 10</option><option style="color:#2f3a57">11 – 50</option><option style="color:#2f3a57">51 – 200</option><option data-i18n="form.storesMax" style="color:#2f3a57">Más de 200</option></select></div>
+<div class="field" style="grid-column:1 / -1"><label data-i18n="form.useCase">Tu caso de uso</label><textarea class="input" name="caso_de_uso" data-i18n-placeholder="form.useCasePh" placeholder="¿Qué te gustaría resolver con precios dinámicos?" style="min-height:70px"></textarea></div>
 </div>
 <p id="pilotError" role="alert" style="display:none;margin:14px 0 0;font-size:13.5px;line-height:1.5;color:#ffdad4;background:rgba(255,90,80,.15);border:1px solid rgba(255,120,110,.45);border-radius:10px;padding:10px 12px"></p>
-<button type="submit" id="pilotSubmit" class="btn btn-block btn-white" style="margin-top:16px;padding:13px;font-family:var(--font-heading)">Enviar postulación</button>
+<button type="submit" id="pilotSubmit" class="btn btn-block btn-white" data-i18n="form.submit" style="margin-top:16px;padding:13px;font-family:var(--font-heading)">Enviar postulación</button>
 </form>
 <div id="pilotSuccess" role="status" hidden style="text-align:center;padding:20px 8px">
 <div style="width:52px;height:52px;margin:0 auto;border-radius:50%;background:#bcd98a;display:grid;place-content:center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2f3a57" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
-<h4 style="font-family:var(--font-heading);font-size:22px;margin:16px 0 0;color:#bcd98a">¡Postulación recibida!</h4>
-<p style="font-size:15px;line-height:1.6;margin:10px 0 0;color:#fff">Gracias por tu interés en Arvum. Revisaremos tu operación y te contactaremos pronto.</p>
+<h4 data-i18n="form.successTitle" style="font-family:var(--font-heading);font-size:22px;margin:16px 0 0;color:#bcd98a">¡Postulación recibida!</h4>
+<p data-i18n="form.successBody" style="font-size:15px;line-height:1.6;margin:10px 0 0;color:#fff">Gracias por tu interés en Arvum. Revisaremos tu operación y te contactaremos pronto.</p>
 </div>
 </div>
 </div>
@@ -306,19 +334,266 @@ select.input{appearance:none}
 </footer>
 
 <script>
+/* ─────────────────────────────────────────────────────────────────────────
+   i18n — Spanish lives in the markup (so a no-JS visitor still gets the
+   original page); English lives in the dictionary below. Switching swaps
+   textContent / placeholder / value / meta content in place.
+   To edit Spanish copy, edit the HTML. To edit English copy, edit EN.
+   ───────────────────────────────────────────────────────────────────────── */
 (function () {
+  var EN = {
+    'meta.title': 'Arvum · Dynamic pricing engine',
+    'meta.description': 'Arvum: a unified platform + AI that moves the price of every product with demand, inventory, competition and time. Apply to the pilot program.',
+    'meta.locale': 'en_US',
+    'meta.ogTitle': 'Arvum · The price of everything moves',
+    'meta.ogDescription': 'A unified platform + AI that moves the price of every product with demand, inventory, competition and time. Apply to the pilot program.',
+    'meta.twitterDescription': 'A unified platform + AI that moves the price of every product with demand, inventory, competition and time.',
+
+    'nav.beta': 'Private beta',
+    'nav.platform': 'Platform',
+    'nav.benefits': 'Benefits',
+    'nav.contact': 'Contact us',
+
+    'feed.salmon': 'Salmon',
+    'feed.wine': 'Reserve Wine',
+    'feed.shoes': 'Running Shoes',
+    'feed.tv': 'Smart TV 50"',
+    'feed.coffee': 'Premium Coffee',
+
+    'hero.kicker': 'Pricing engine · live',
+    'hero.h1': 'The price of everything moves.',
+    'hero.rotLead': 'Arvum optimizes',
+    'hero.rot1': 'your restaurant',
+    'hero.rot2': 'your fashion',
+    'hero.rot3': 'your electronics',
+    'hero.rot4': 'your e-commerce',
+    'hero.rot5': 'your hardware store',
+    'hero.rot6': 'your supermarket',
+    'hero.lede': 'A unified platform + AI that moves the price of every product with demand, inventory, competition and time.',
+    'hero.ctaPrimary': 'Apply as a pilot',
+    'hero.ctaSecondary': 'How it works →',
+
+    'card.livePrice': 'Live price',
+    'card.ago': '2s ago',
+    'card.product': 'Fresh salmon 500g',
+    'card.sku': 'SKU 90412 · Perishable',
+    'card.tag': '▼ expiry',
+    'card.demand': 'demand ↓',
+    'card.margin': 'optimal margin',
+
+    'verticals.title': 'Works for any product whose value moves with the market',
+    'chip.grocery': 'Supermarkets and perishables',
+    'chip.fashion': 'Fashion and seasonal',
+    'chip.electronics': 'Electronics',
+    'chip.ecommerce': 'E-commerce',
+    'chip.hardware': 'Hardware and home',
+    'chip.drinks': 'Drinks and spirits',
+
+    'benefits.title': 'Why Arvum?',
+    'benefit1.title': 'One single platform',
+    'benefit1.body': 'Unifies POS, inventory, purchasing, pricing, promotions, logistics, finance and e-commerce. Goodbye data silos.',
+    'benefit2.title': 'Maximize revenue',
+    'benefit2.body': 'AI weighs dozens of variables and applies the optimal price in real time. Every product reaches the customer at the right moment and the right price.',
+    'benefit3.title': 'Cut waste',
+    'benefit3.body': 'Move perishables before they expire: less shrinkage, fewer clearance sales and more affordable food.',
+
+    'integrations.lede': 'We start as an integration layer. It plugs into what you already run:',
+
+    'pilot.kicker': 'Pilot program',
+    'pilot.title': 'Be among the first to use Arvum',
+    'pilot.body': 'Limited spots for retailers who want to pilot the platform with real feedback. Tell us about your operation and we will be in touch.',
+
+    'form.subject': 'New pilot application — Arvum',
+    'form.name': 'Name',
+    'form.namePh': 'Your name',
+    'form.company': 'Company',
+    'form.companyPh': 'Retailer / company',
+    'form.email': 'Work email',
+    'form.emailPh': 'name@company.com',
+    'form.stores': 'Number of stores',
+    'form.storesMax': 'More than 200',
+    'form.useCase': 'Your use case',
+    'form.useCasePh': 'What would you like to solve with dynamic pricing?',
+    'form.submit': 'Send application',
+    'form.sending': 'Sending…',
+    'form.successTitle': 'Application received!',
+    'form.successBody': 'Thanks for your interest in Arvum. We will review your operation and get in touch soon.',
+    'form.errorGeneric': 'We could not send your application. Please try again.',
+    'form.errorNetwork': 'A network error occurred. Check your connection and try again.'
+  };
+
+  /* Strings the markup has no home for (JS-only). Spanish side kept here. */
+  var ES_EXTRA = {
+    'form.sending': 'Enviando…',
+    'form.errorGeneric': 'No pudimos enviar tu postulación. Inténtalo de nuevo.',
+    'form.errorNetwork': 'Ocurrió un error de red. Revisa tu conexión e inténtalo de nuevo.'
+  };
+
+  var TEXT_NODES = document.querySelectorAll('[data-i18n]');
+  var PLACEHOLDERS = document.querySelectorAll('[data-i18n-placeholder]');
+  var VALUES = document.querySelectorAll('[data-i18n-value]');
+  var CONTENTS = document.querySelectorAll('[data-i18n-content]');
+
+  /* Snapshot the Spanish already in the markup so we can switch back. */
+  var ES = {};
+  var i;
+  for (i = 0; i < TEXT_NODES.length; i++) ES[TEXT_NODES[i].getAttribute('data-i18n')] = TEXT_NODES[i].textContent;
+  for (i = 0; i < PLACEHOLDERS.length; i++) ES[PLACEHOLDERS[i].getAttribute('data-i18n-placeholder')] = PLACEHOLDERS[i].placeholder;
+  for (i = 0; i < VALUES.length; i++) ES[VALUES[i].getAttribute('data-i18n-value')] = VALUES[i].value;
+  for (i = 0; i < CONTENTS.length; i++) ES[CONTENTS[i].getAttribute('data-i18n-content')] = CONTENTS[i].getAttribute('content');
+  for (var k in ES_EXTRA) if (Object.prototype.hasOwnProperty.call(ES_EXTRA, k)) ES[k] = ES_EXTRA[k];
+
+  var DICT = { es: ES, en: EN };
+  var current = 'es';
+
+  function t(key) {
+    var d = DICT[current];
+    return (d && d[key] != null) ? d[key] : ES[key];
+  }
+
+  /* ── rotating headline ────────────────────────────────────────────────
+     The pill width is animated through @keyframes tuned to the Spanish
+     words. English words are a different length, so measure the current
+     list and rewrite the keyframes to match. */
+  var rotStyle = document.createElement('style');
+  document.head.appendChild(rotStyle);
+  var STOPS = ['0%,13%', '20%,33%', '40%,53%', '60%,73%', '80%,93%', '100%'];
+
+  function fitRotator() {
+    var rot = document.querySelector('.rot');
+    if (!rot) return;
+
+    var narrow = window.matchMedia('(max-width: 860px)').matches;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (narrow || reduced) { rot.style.animationName = ''; return; }
+
+    var items = rot.querySelectorAll('li');
+    if (!items.length) return;
+
+    var cs = getComputedStyle(rot);
+    var probe = document.createElement('span');
+    probe.setAttribute('aria-hidden', 'true');
+    probe.style.cssText = 'position:absolute;left:-9999px;top:-9999px;white-space:nowrap;visibility:hidden;pointer-events:none';
+    probe.style.fontFamily = cs.fontFamily;
+    probe.style.fontSize = cs.fontSize;
+    probe.style.fontWeight = cs.fontWeight;
+    probe.style.fontStyle = cs.fontStyle;
+    probe.style.letterSpacing = cs.letterSpacing;
+    document.body.appendChild(probe);
+
+    var pad = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+    var widths = [];
+    var widest = 0;
+    for (var j = 0; j < items.length && j < STOPS.length; j++) {
+      probe.textContent = items[j].textContent;
+      var w = Math.ceil(probe.offsetWidth + pad + 8);
+      if (w > widest) widest = w;
+      widths.push(w);
+    }
+    document.body.removeChild(probe);
+
+    /* Measuring in a zero-width / not-yet-laid-out document gives garbage;
+       leave the last good keyframes in place and wait for the next call. */
+    if (widest <= pad + 8) return;
+
+    var css = '@keyframes boxwDyn{';
+    for (var m = 0; m < widths.length; m++) css += STOPS[m] + '{width:' + widths[m] + 'px}';
+    css += '}';
+
+    rotStyle.textContent = css;
+    rot.style.animationName = 'boxwDyn';
+  }
+
+  /* ── apply a language ─────────────────────────────────────────────────── */
+  var btn = document.getElementById('langToggle');
+  var code = document.getElementById('langCode');
+  var formLang = document.getElementById('formLanguage');
+
+  function apply(lang, persist) {
+    current = (lang === 'en') ? 'en' : 'es';
+    var n;
+
+    for (n = 0; n < TEXT_NODES.length; n++) TEXT_NODES[n].textContent = t(TEXT_NODES[n].getAttribute('data-i18n'));
+    for (n = 0; n < PLACEHOLDERS.length; n++) PLACEHOLDERS[n].placeholder = t(PLACEHOLDERS[n].getAttribute('data-i18n-placeholder'));
+    for (n = 0; n < VALUES.length; n++) VALUES[n].value = t(VALUES[n].getAttribute('data-i18n-value'));
+    for (n = 0; n < CONTENTS.length; n++) CONTENTS[n].setAttribute('content', t(CONTENTS[n].getAttribute('data-i18n-content')));
+
+    document.documentElement.lang = current;
+    if (formLang) formLang.value = current;
+
+    if (btn && code) {
+      var other = current === 'es' ? 'en' : 'es';
+      code.textContent = other.toUpperCase();
+      var label = current === 'es' ? 'Switch to English' : 'Cambiar a español';
+      btn.setAttribute('aria-label', label);
+      btn.setAttribute('title', label);
+      btn.setAttribute('lang', other);
+    }
+
+    if (persist) {
+      try { localStorage.setItem('arvum-lang', current); } catch (e) {}
+      try {
+        var url = new URL(window.location.href);
+        url.searchParams.set('lang', current);
+        history.replaceState(null, '', url.toString());
+      } catch (e2) {}
+    }
+
+    fitRotator();
+  }
+
+  /* ── initial language: ?lang= → saved choice → browser → es ───────────── */
+  function initialLang() {
+    var q;
+    try { q = new URL(window.location.href).searchParams.get('lang'); } catch (e) { q = null; }
+    if (q === 'en' || q === 'es') return q;
+
+    var saved = null;
+    try { saved = localStorage.getItem('arvum-lang'); } catch (e2) {}
+    if (saved === 'en' || saved === 'es') return saved;
+
+    var nav = (navigator.language || 'es').toLowerCase();
+    return nav.indexOf('es') === 0 ? 'es' : 'en';
+  }
+
+  apply(initialLang(), false);
+
+  if (btn) {
+    btn.addEventListener('click', function () {
+      apply(current === 'es' ? 'en' : 'es', true);
+    });
+  }
+
+  /* Re-measure once webfonts land and whenever the viewport changes. The
+     extra passes cover a layout that has not settled on first paint, which
+     would otherwise leave the pill at its stylesheet width and clip the
+     longer English words. */
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitRotator).catch(function () {});
+  requestAnimationFrame(fitRotator);
+  setTimeout(fitRotator, 400);
+  window.addEventListener('load', fitRotator);
+  var resizeTimer;
+  window.addEventListener('resize', function () {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(fitRotator, 150);
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) fitRotator();
+  });
+  window.addEventListener('pageshow', fitRotator);
+
+  /* ── pilot form ───────────────────────────────────────────────────────── */
   var form = document.getElementById('pilotForm');
   if (!form) return;
-  var btn = document.getElementById('pilotSubmit');
+  var submit = document.getElementById('pilotSubmit');
   var errBox = document.getElementById('pilotError');
   var success = document.getElementById('pilotSuccess');
-  var defaultLabel = btn.textContent;
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
     errBox.style.display = 'none';
-    btn.disabled = true;
-    btn.textContent = 'Enviando…';
+    submit.disabled = true;
+    submit.textContent = t('form.sending');
 
     fetch(form.action, {
       method: 'POST',
@@ -334,16 +609,14 @@ select.input{appearance:none}
       return res.json().then(function (data) {
         var msg = (data && data.errors && data.errors.length)
           ? data.errors.map(function (x) { return x.message; }).join(' ')
-          : 'No pudimos enviar tu postulación. Inténtalo de nuevo.';
+          : t('form.errorGeneric');
         throw new Error(msg);
       });
     }).catch(function (err) {
-      errBox.textContent = (err && err.message)
-        ? err.message
-        : 'Ocurrió un error de red. Revisa tu conexión e inténtalo de nuevo.';
+      errBox.textContent = (err && err.message) ? err.message : t('form.errorNetwork');
       errBox.style.display = 'block';
-      btn.disabled = false;
-      btn.textContent = defaultLabel;
+      submit.disabled = false;
+      submit.textContent = t('form.submit');
     });
   });
 })();
